@@ -1,0 +1,40 @@
+Aim:
+        To design and implement a Neural Network model for binary classification of movie reviews using the IMDB dataset, classifying reviews as positive or negative.
+
+Description:
+
+The IMDB dataset contains movie reviews labeled as positive (1) or negative (0).
+Each review is represented as a sequence of word indices based on word frequency.
+In this experiment:
+•	Reviews are converted into numerical representations.
+•	A neural network with embedding and dense layers is used.
+•	ReLU activation is used in hidden layers.
+•	Sigmoid activation is used in the output layer for binary classification.
+•	The model is trained using the Adam optimizer and Binary Cross-Entropy loss
+
+Program:
+import tensorflow as tf
+from tensorflow.keras.models import Sequential
+from tensorflow.keras.layers import Dense, Embedding, GlobalAveragePooling1D
+from tensorflow.keras.datasets import imdb
+from tensorflow.keras.preprocessing.sequence import pad_sequences
+vocab_size = 10000
+(x_train, y_train), (x_test, y_test) = imdb.load_data(num_words=vocab_size)
+max_length = 200
+x_train = pad_sequences(x_train, maxlen=max_length)
+x_test = pad_sequences(x_test, maxlen=max_length)
+model = Sequential()
+model.add(Embedding(vocab_size, 16, input_length=max_length))
+model.add(GlobalAveragePooling1D())
+model.add(Dense(16, activation='relu'))
+model.add(Dense(1, activation='sigmoid'))
+model.compile(optimizer='adam',
+              loss='binary_crossentropy',
+              metrics=['accuracy'])
+model.fit(x_train, y_train, epochs=10, batch_size=512, validation_split=0.2)
+loss, accuracy = model.evaluate(x_test, y_test)
+print("Test Accuracy:", accuracy)
+
+Result:
+
+The neural network successfully classifies movie reviews as positive or negative with an accuracy of approximately 85–88%.
