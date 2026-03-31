@@ -1,0 +1,42 @@
+Aim
+
+To implement One-Hot Encoding for words or characters to convert textual data into numerical form suitable for machine learning models.
+
+Description
+
+Machine learning algorithms cannot directly process text data.
+One-Hot Encoding is a technique that converts each unique word or character into a binary vector where:
+•	Only one position is 1
+•	All other positions are 0
+This representation helps models understand categorical text data.
+
+Program:
+sentence = "I love AI"
+words = sentence.split()
+unique_words = list(set(words))
+one_hot = {}
+for word in unique_words:
+    vector = []
+    for w in unique_words:
+        if word == w:
+            vector.append(1)
+        else:
+            vector.append(0)
+    one_hot[word] = vector
+for word, vector in one_hot.items():
+    print(word, ":", vector)# Step 1: Input sentence
+sentence = "I love AI"
+words = sentence.split()
+unique_words = list(set(words))
+one_hot = {}
+for word in unique_words:
+    vector = []
+    for w in unique_words:
+        if word == w:
+            vector.append(1)
+        else:
+            vector.append(0)
+    one_hot[word] = vector
+for word, vector in one_hot.items():
+    print(word, ":", vector)
+
