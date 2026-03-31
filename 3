@@ -1,0 +1,49 @@
+3.	Design a neural Network for classifying news wires (Multi class classification) using Reuters dataset.
+Aim:
+      To design and implement a Neural Network model for multi-class classification of news wires using the Reuters dataset, where each news article is classified into one of multiple topics.
+
+Description:
+
+The Reuters dataset is a benchmark dataset used for topic classification.
+It contains news articles labeled into 46 different categories.
+In this experiment:
+•	News articles are represented as sequences of word indices.
+•	Data is vectorized into fixed-length numeric vectors.
+•	A neural network with Dense layers is designed.
+•	ReLU activation is used in hidden layers.
+•	Softmax activation is used in the output layer for multi-class classification.
+•	The model is trained using the Adam optimizer and Categorical Cross-Entropy loss.
+
+Program:
+
+import tensorflow as tf
+from tensorflow.keras.models import Sequential
+from tensorflow.keras.layers import Dense
+from tensorflow.keras.datasets import reuters
+from tensorflow.keras.utils import to_categorical
+import numpy as np
+num_words = 10000
+(x_train, y_train), (x_test, y_test) = reuters.load_data(num_words=num_words)
+def vectorize_sequences(sequences, dimension=10000):
+    results = np.zeros((len(sequences), dimension))
+    for i, sequence in enumerate(sequences):
+        results[i, sequence] = 1.0
+    return results
+x_train = vectorize_sequences(x_train, num_words)
+x_test = vectorize_sequences(x_test, num_words)
+y_train = to_categorical(y_train)
+y_test = to_categorical(y_test)
+model = Sequential()
+model.add(Dense(64, activation='relu', input_shape=(num_words,)))
+model.add(Dense(64, activation='relu'))
+model.add(Dense(46, activation='softmax'))
+model.compile(optimizer='adam',
+              loss='categorical_crossentropy',
+              metrics=['accuracy'])
+model.fit(x_train, y_train, epochs=10, batch_size=512, validation_split=0.2)
+loss, accuracy = model.evaluate(x_test, y_test)
+print("Test Accuracy:", accuracy)
+
+Result :
+
+The neural network successfully classifies Reuters news articles into 46 different categories with an accuracy of approximately 75–80%.
